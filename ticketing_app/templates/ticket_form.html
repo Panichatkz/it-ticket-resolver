@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Enterprise IT MIMO Console</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 40px; background: #f4f6f9; color: #333; }
+        .card { max-width: 600px; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin: 0 auto; }
+        h3 { color: #2c3e50; border-bottom: 2px solid #ecf0f1; padding-bottom: 12px; margin-top: 0; }
+        label { font-weight: bold; display: block; margin-top: 15px; margin-bottom: 5px; color: #34495e; }
+        textarea, select, input { width: 100%; padding: 10px; margin-bottom: 5px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 14px; }
+        .row { display: flex; gap: 15px; } .col { flex: 1; }
+        button { background: #007bff; color: white; border: none; padding: 12px; width: 100%; cursor: pointer; font-size: 16px; font-weight: bold; border-radius: 4px; margin-top: 15px; transition: background 0.2s; }
+        button:hover { background: #0056b3; }
+        .res { margin-top: 20px; padding: 15px; background: #e8f4fd; display: none; border-left: 5px solid #007bff; border-radius: 4px; }
+        .nav-link { display: block; text-align: center; margin-top: 20px; color: #007bff; text-decoration: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h3>Submit Internal Incident (Keras MIMO Deployment Engine)</h3>
+        <form id="ticketForm">
+            {% csrf_token %}
+            <label>Subject Line + Technical Error Logs:</label>
+            <textarea id="txt" required placeholder="Paste error string dumps or critical symptoms..."></textarea>
+            
+            <div class="row">
+                <div class="col">
+                    <label>Asset Category:</label>
+                    <select id="asset">
+                        <option value="0">Workstation / Laptop</option>
+                        <option value="1">Network Switch / Router</option>
+                        <option value="2">Corporate Server</option>
+                        <option value="3">Payroll Cloud Software</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <label>Department / Org Source:</label>
+                    <select id="dept">
+                        <option value="0">Finance Operations</option>
+                        <option value="1">Human Resources</option>
+                        <option value="2">Core Engineering</option>
+                        <option value="3">Logistics Fleet</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <label>Employee Tenure (Years):</label>
+                    <input type="number" id="tenure" step="0.1" value="2.5">
+                </div>
+                <div class="col">
+                    <label>Software Version Index:</label>
+                    <input type="number" id="version" step="0.1" value="14.2">
+                </div>
+            </div>
+
+            <button type="submit">Execute MIMO Inferences Pipeline</button>
+        </form>
+
+        <div id="resultsBox" class="res">
+            <h4>Parallel Output Prediction Matrices:</h4>
+            <p id="r1"></p><p id="r2"></p><p id="r3"></p>
+            <p id="dbLog" style="font-size: 12px; color: #666; font-style: italic; border-top: 1px solid #cbd5e1; padding-top: 8px; margin-top: 8px;"></p>
+        </div>
+        <a class="nav-link" href="/logs/">📊 Launch Historical MongoDB Audit Table Ledger</a>
+    </div>
+
+    <script>
+        document.getElementById('ticketForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            document.getElementById('r1').innerText = 'Piping numeric vectors down to Keras layers...';
+            document.getElementById('r2').innerText = ''; document.getElementById('r3').innerText = '';
+            document.getElementById('dbLog').innerText = '';
+
+            try {
+                const res = await fetch('', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json', 
+                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                    },
+                    // PLACED HERE: Your updated JSON formatting engine with fallback values
+                    body: JSON.stringify({
+                        subject_text: document.getElementById('txt').value,
+                        asset_category: parseInt(document.getElementById('asset').value) || 0,
+                        department_org: parseInt(document.getElementById('dept').value) || 0,
+                        employee_tenure: parseFloat(document.getElementById('tenure').value) || 1.0,
+                        software_version: parseFloat(document.getElementById('version').value) || 1.0
+                    })
+                });
+                
+                const data = await res.json();
+                if(data.status === 'success') {
+                    document.getElementById('r1').innerText = '🔴 Predicted Impact Urgency: ' + data.predictions.urgency;
+                    document.getElementById('r2').innerText = '⚙️ Assigned Target Engineering Queue: ' + data.predictions.assigned_team;
+                    document.getElementById('r3').innerText = '⏱️ Expected SLA Resolution Clearance Window: ' + data.predictions.sla_time;
+                    document.getElementById('dbLog').innerText = data.database_log;
+                    document.getElementById('resultsBox').style.display = 'block';
+                } else {
+                    document.getElementById('r1').innerText = 'Backend Error: ' + data.message;
+                    document.getElementById('resultsBox').style.display = 'block';
+                }
+            } catch (err) {
+                document.getElementById('r1').innerText = 'Pipeline processing execution anomaly: ' + err.message;
+                document.getElementById('resultsBox').style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>

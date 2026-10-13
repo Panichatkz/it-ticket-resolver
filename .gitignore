@@ -1,0 +1,24 @@
+# Python / Virtual Environment
+.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Django
+*.log
+local_settings.py
+db.sqlite3
+media/
+staticfiles/
+
+# Jupyter / Checkpoints
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+
+# IDEs & OS Files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
